@@ -34,7 +34,7 @@
 #include "iss.hpp"
 #include "ternary_hashmaps.hpp"
 
-static inline uint32_t lib_VEC_DOTP_TERNARY(iss_cpu_state_t *s, uint32_t A, uint32_t B) {
+static inline uint32_t lib_VEC_SDOTP_TERNARY(iss_cpu_state_t *s, uint32_t out, uint32_t A, uint32_t B) {
   uint8_t A0 = (A & 0xff);
   uint8_t A1 = (A & 0xff00) >> 8;
   uint8_t A2 = (A & 0xff0000) >> 16;
@@ -56,7 +56,6 @@ static inline uint32_t lib_VEC_DOTP_TERNARY(iss_cpu_state_t *s, uint32_t A, uint
   uint16_t B3_dec = decoder_map[B3];
 
   int8_t a0, a1, a2, a3, b0, b1, b2, b3;
-  uint32_t out = 0;
 
   for (int i=0; i<5; i++) {
     a0 = (A0_dec & (0x3 << 2*i)) >> 2*i;
@@ -97,7 +96,7 @@ static inline iss_insn_t *pv_mlsdotp_t_exec(iss_t *iss, iss_insn_t *insn)
   bool ac_update = ((ctl_imm & ASPR_UPDATE_MASK) >> ASPR_UPDATE_POS);
   bool wt_update = ((ctl_imm & WSPR_UPDATE_MASK) >> WSPR_UPDATE_POS);
 
-  REG_SET(0, LIB_CALL3(lib_VEC_DOTP_TERNARY, REG_GET(0), SPR_GET(wt_addr), SPR_GET(ac_addr)));
+  REG_SET(0, LIB_CALL3(lib_VEC_SDOTP_TERNARY, REG_GET(0), SPR_GET(wt_addr), SPR_GET(ac_addr)));
 
   if(ac_update)
   {
@@ -108,7 +107,7 @@ static inline iss_insn_t *pv_mlsdotp_t_exec(iss_t *iss, iss_insn_t *insn)
     }
     else
     {
-      iss->cpu.state.stall_callback = pv_##insn_name##_c_resume;
+      iss->cpu.state.stall_callback = pv_mlsdotp_t_resume;
       iss->cpu.pulp_nn.ml_insn = insn;
       iss_exec_insn_stall(iss);
     }
@@ -124,7 +123,7 @@ static inline iss_insn_t *pv_mlsdotp_t_exec(iss_t *iss, iss_insn_t *insn)
     }
     else
     {
-      iss->cpu.state.stall_callback = pv_##insn_name##_c_resume;
+      iss->cpu.state.stall_callback = pv_mlsdotp_t_resume;
       iss->cpu.pulp_nn.ml_insn = insn;
       iss_exec_insn_stall(iss);
     }
