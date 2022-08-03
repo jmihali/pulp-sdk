@@ -138,4 +138,9 @@ static inline iss_insn_t *pv_mlsdotp_t_exec(iss_t *iss, iss_insn_t *insn)
   return insn->next;
 }
 
+static inline void iss_pulp_tnn_init(iss_t *iss)
+{
+  iss->cpu.pulp_tnn.qnt_step = 0;
+}
+
 #endif

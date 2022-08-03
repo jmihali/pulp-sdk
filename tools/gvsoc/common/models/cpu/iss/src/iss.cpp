@@ -15,7 +15,7 @@
  * limitations under the License.
  */
 
-/* 
+/*
  * Authors: Germain Haugou, GreenWaves Technologies (germain.haugou@greenwaves-technologies.com)
  */
 
@@ -263,7 +263,7 @@ void iss_reset(iss_t *iss, int active)
     }
 
     iss_cache_flush(iss);
-    
+
     iss->cpu.prev_insn = NULL;
     iss->cpu.state.elw_insn = NULL;
 
@@ -272,6 +272,7 @@ void iss_reset(iss_t *iss, int active)
 
   iss_csr_init(iss, active);
   iss_pulp_nn_init(iss);
+  iss_pulp_tnn_init(iss);
 }
 
 int iss_open(iss_t *iss)
