@@ -15,7 +15,7 @@
  * limitations under the License.
  */
 
-/* 
+/*
  * Authors: Germain Haugou, GreenWaves Technologies (germain.haugou@greenwaves-technologies.com)
  */
 
@@ -39,5 +39,6 @@
 #include "rvXint64.hpp"
 #include "rnnext.hpp"
 #include "pulp_nn.hpp"
+#include "pulp_tnn.hpp"
 
 #endif
