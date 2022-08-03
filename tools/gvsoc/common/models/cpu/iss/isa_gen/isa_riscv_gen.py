@@ -17,7 +17,7 @@
 # limitations under the License.
 #
 
-# 
+#
 # Authors: Germain Haugou, GreenWaves Technologies (germain.haugou@greenwaves-technologies.com)
 #
 
@@ -675,7 +675,7 @@ rv32f = IsaSubset('f', [
 
     R5('flw',       'FL', '------- ----- ----- 010 ----- 0000111', tags=["load"]),
     R5('fsw',       'FS', '------- ----- ----- 010 ----- 0100111'),
-    
+
     R5('fmadd.s',   'R4U','-----00 ----- ----- --- ----- 1000011', tags=['fmadd']),
     R5('fmsub.s',   'R4U','-----00 ----- ----- --- ----- 1000111', tags=['fmadd']),
     R5('fnmsub.s',  'R4U','-----00 ----- ----- --- ----- 1001011', tags=['fmadd']),
@@ -724,7 +724,7 @@ Xf16 = IsaSubset('f16', [
 
     R5('flh',       'FL', '------- ----- ----- 001 ----- 0000111', tags=["load"]),
     R5('fsh',       'FS', '------- ----- ----- 001 ----- 0100111'),
-    
+
     R5('fmadd.h',   'R4U','-----10 ----- ----- --- ----- 1000011', tags=['sfmadd']),
     R5('fmsub.h',   'R4U','-----10 ----- ----- --- ----- 1000111', tags=['sfmadd']),
     R5('fnmsub.h',  'R4U','-----10 ----- ----- --- ----- 1001011', tags=['sfmadd']),
@@ -772,7 +772,7 @@ Xf16 = IsaSubset('f16', [
 ])
 
 Xf16alt = IsaSubset('f16alt', [
-    
+
     R5('fmadd.ah',   'R4U','-----10 ----- ----- 101 ----- 1000011', tags=['sfmadd']),
     R5('fmsub.ah',   'R4U','-----10 ----- ----- 101 ----- 1000111', tags=['sfmadd']),
     R5('fnmsub.ah',  'R4U','-----10 ----- ----- 101 ----- 1001011', tags=['sfmadd']),
@@ -827,7 +827,7 @@ Xf8 = IsaSubset('f8', [
 
     R5('flb',       'FL', '------- ----- ----- 000 ----- 0000111', tags=["load"]),
     R5('fsb',       'FS', '------- ----- ----- 000 ----- 0100111'),
-    
+
     R5('fmadd.b',   'R4U','-----11 ----- ----- --- ----- 1000011', tags=['sfmadd']),
     R5('fmsub.b',   'R4U','-----11 ----- ----- --- ----- 1000111', tags=['sfmadd']),
     R5('fnmsub.b',  'R4U','-----11 ----- ----- --- ----- 1001011', tags=['sfmadd']),
@@ -1217,7 +1217,7 @@ Xfaux = IsaSubset('faux', [
     R5('vfdotpex.s.r.b','RVF', '1001011 ----- ----- 111 ----- 0110011', tags=['fmadd'], isa_tags=['f8auxvec']),
     R5('vfavg.b',       'RVF', '1010110 ----- ----- 011 ----- 0110011', tags=['fadd'], isa_tags=['f8auxvec']),
     R5('vfavg.r.b',     'RVF', '1010110 ----- ----- 111 ----- 0110011', tags=['fadd'], isa_tags=['f8auxvec']),
-  
+
 ])
 
 
@@ -1737,7 +1737,7 @@ pulp_nn_insns = [
     R5('pv.sub.n',         'R',     '0000100 ----- ----- 010 ----- 1010111'),
     R5('pv.sub.sc.n',      'R',     '0000100 ----- ----- 011 ----- 1010111'),
     R5('pv.sub.c',         'R',     '0000101 ----- ----- 010 ----- 1010111'),
-    R5('pv.sub.sc.c',      'R',     '0000101 ----- ----- 011 ----- 1010111'),    
+    R5('pv.sub.sc.c',      'R',     '0000101 ----- ----- 011 ----- 1010111'),
     # avg signed operands
     R5('pv.avg.n',        'R',   '0001000 ----- ----- 010 ----- 1010111'),
     R5('pv.avg.sc.n',     'R',   '0001000 ----- ----- 011 ----- 1010111'),
@@ -1854,10 +1854,15 @@ rnnext = [
     R5('pl.sig',      'R1',   '1111100 00000 ----- 001 ----- 1110111'),
 ]
 
+pulp_tnn_insns = [
+    # CompressedMAC
+    R5('pv.mlsdotp.t', 'RRRU3', '1110000 ----- ----- 100 ----- 1110111')
+]
+
 pulp_v2 = IsaSubset('pulpv2', pulp_v2_insns + pulp_common_insns)
 pulp_nn = IsaSubset('pulpnn', pulp_nn_insns)
 pulp_v2_rnnext = IsaSubset('rnnext', rnnext)
-
+pulp_tnn = IsaSubset('pulptnn', pulp_tnn_insns)
 
 gap8 = IsaSubset('gap8', [
     R5('pv.cplxmul.s',      'R',   '010101- ----- ----- 000 ----- 1010111', mapTo="lib_CPLXMULS"),
@@ -2012,6 +2017,7 @@ isa = Isa(
         IsaDecodeTree('pulp_v2', [pulp_v2]),
         IsaDecodeTree('pulp_nn', [pulp_nn]),
         IsaDecodeTree('rnnext', [pulp_v2_rnnext]),
+        IsaDecodeTree('pulp_tnn', [pulp_tnn]),
         IsaDecodeTree('f', [rv32f]),
         IsaDecodeTree('sfloat', [Xf16, Xf16alt, Xf8, Xfvec, Xfaux]),
         IsaDecodeTree('gap8', [gap8]),
@@ -2073,7 +2079,7 @@ with open(args.header_file, 'w') as isaFileHeader:
                     insn.get_out_reg(0).set_latency(37)
 
 
-        # TODO these are the old timings, find a way to make that more configurable        
+        # TODO these are the old timings, find a way to make that more configurable
         # for insn in isa.get_insns():
         #     if "load" in insn.tags:
         #         insn.get_out_reg(0).set_latency(2)
