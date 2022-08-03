@@ -45,6 +45,7 @@ class Runner(object):
                 return -1
 
         if self.args.all or self.args.exec:
+            #import ipdb; ipdb.set_trace()
             if self.exec() != 0:
                 return -1
 
@@ -54,7 +55,7 @@ class Runner(object):
     def conf(self):
 
         boot_mode = self.config.get_str("runner/boot/mode")
-        if boot_mode is None: 
+        if boot_mode is None:
             raise errors.InputError('The boot mode has to be specified')
 
         binary = self.config.get_str('runner/boot-loader')
@@ -114,7 +115,7 @@ class Runner(object):
                     file_name = flash_path.replace('/', '.') + '.' + stim_format
 
                 file_path = os.path.join(work_dir, file_name)
-                    
+
                 flash_config.set("content/stimuli/format", stim_format)
                 flash_config.set("content/stimuli/file", file_path)
 
@@ -147,7 +148,7 @@ class Runner(object):
 
         return flash_config
 
-        
+
     def get_boot_flash_type(self):
         flash_config = self.get_boot_flash()
         return flash_config.get_str('datasheet/type')
