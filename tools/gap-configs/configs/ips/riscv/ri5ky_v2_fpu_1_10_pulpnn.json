@@ -2,7 +2,7 @@
   "version"       : "ri5cyv2",
   "archi"         : "riscv",
   "implementation": "ri5cy",
-  "gv_isa"        : ["--pulp", "--rv32m", "--pulpv2", "--pulp-perf-counters", "--pulp-hw-loop", "--itc-external-req", "--fpu", "--fpud", "--shared-fpu", "--pulpnn"],
+  "gv_isa"        : ["--pulp", "--rv32m", "--pulpv2", "--pulp-perf-counters", "--pulp-hw-loop", "--itc-external-req", "--fpu", "--fpud", "--shared-fpu", "--pulpnn", "--pulptnn"],
   "isa"           : "rv32imfcXpulpv2Xpulpnn",
   "march"         : "imfcXpulpv2",
   "compiler_args" : ["-mfdiv"],
