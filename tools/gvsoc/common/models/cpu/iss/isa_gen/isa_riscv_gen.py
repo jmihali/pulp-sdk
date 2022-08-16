@@ -1856,7 +1856,7 @@ rnnext = [
 
 pulp_tnn_insns = [
     # CompressedMAC
-    R5('pv.mlsdotp.t', 'RRRU3', '1110000 ----- ----- 100 ----- 1110111')
+    R5('pv.smlsdotp.t', 'RRRU3', '1110000 ----- ----- 100 ----- 1110111')
 ]
 
 pulp_v2 = IsaSubset('pulpv2', pulp_v2_insns + pulp_common_insns)
